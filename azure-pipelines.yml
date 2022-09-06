@@ -9,22 +9,22 @@ trigger:
 jobs:
 - job: WinBuild
   displayName: Windows Build
-  condition: eq(variables['variables.TARGET_OS'], 'Windows')
+  condition: eq(variables['TARGET_OS'], 'Windows')
   pool:
     vmImage: 'vs2017-win2016'
   strategy:
     matrix:
       Debug:
         CI_ENV_BUILD_TYPE: Debug
-        BUILD_ARCH: "x64"
+        TARGET_ARCH: "x64"
       Release with Release Installer:
         CI_ENV_BUILD_TYPE: Release
-        BUILD_ARCH: "x86"
+        TARGET_ARCH: "x86"
       Debug x86:
         CI_ENV_BUILD_TYPE: Debug
-        BUILD_ARCH: "x86"
+        TARGET_ARCH: "x86"
       Release with Release Installer x86 (32-bit):
-        BUILD_ARCH: "x86"
+        TARGET_ARCH: "x86"
         CI_ENV_BUILD_TYPE: Release
   steps:
     # Gather Dependencies
@@ -45,7 +45,7 @@ jobs:
     - powershell: Copy-Item azure-pipelines\build_env_tmpl.bat build_env.bat
       displayName: Layering Azure Pipeline's build_env.bat
     - script: |
-          call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\vsdevcmd" -arch=$(BUILD_ARCH) && clean_build.bat
+          call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\vsdevcmd" -arch=$(TARGET_ARCH) && clean_build.bat
       displayName: Clean Build
     - task: ArchiveFiles@2
       displayName: Archive Completed Build Directory
@@ -57,7 +57,7 @@ jobs:
       displayName: Publish Completed Build Directory Archive Build Artifact
       inputs:
         pathtoPublish: $(Build.ArtifactStagingDirectory)\$(CI_ENV_BUILD_TYPE).zip
-        artifactName: Windows $(BUILD_ARCH) $(CI_ENV_BUILD_TYPE)
+        artifactName: Windows $(TARGET_ARCH) $(CI_ENV_BUILD_TYPE)
     - script: choco install innosetup --version 5.6.1.20190126 --allow-downgrade
       displayName: Ensure desired version of Inno Setup is installed.
       condition: eq(variables['CI_ENV_BUILD_TYPE'], 'Release')
@@ -72,7 +72,7 @@ jobs:
         artifactName: Windows Release Installer
 
 - job: LinuxBuild
-  condition: eq(variables['variables.TARGET_OS'], 'Linux')
+  condition: eq(variables['TARGET_OS'], 'Linux')
   strategy:
     matrix:
       ubuntu-18.04:
@@ -91,7 +91,7 @@ jobs:
 
 - job: MacBuild
   displayName: Mac Build
-  condition: eq(variables['variables.TARGET_OS'], 'Mac')
+  condition: eq(variables['TARGET_OS'], 'Mac')
   strategy:
     matrix:
       big-sur-Release:
