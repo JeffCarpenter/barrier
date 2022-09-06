@@ -11,7 +11,7 @@ jobs:
   displayName: Windows Build
   condition: eq(variables['TARGET_OS'], 'Windows')
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'windows-2022'
   strategy:
     matrix:
       Debug:
