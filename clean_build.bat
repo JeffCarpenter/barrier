@@ -40,7 +40,7 @@ rmdir /q /s build
 mkdir build
 if ERRORLEVEL 1 goto failed
 cd build
-cmake -G "%cmake_gen%" -A x64 -D CMAKE_BUILD_TYPE=%B_BUILD_TYPE% -D CMAKE_PREFIX_PATH="%B_QT_FULLPATH%" -D DNSSD_LIB="%B_BONJOUR%\Lib\x64\dnssd.lib" -D QT_VERSION=%B_QT_VER% ..
+cmake -G "%cmake_gen%" -A "%TARGET_ARCH%" -D CMAKE_BUILD_TYPE=%B_BUILD_TYPE% -D CMAKE_PREFIX_PATH="%B_QT_FULLPATH%" -D DNSSD_LIB="%B_BONJOUR%\Lib\x64\dnssd.lib" -D QT_VERSION=%B_QT_VER% ..
 if ERRORLEVEL 1 goto failed
 cmake --build . --config %B_BUILD_TYPE%
 if ERRORLEVEL 1 goto failed
