@@ -45,7 +45,7 @@ jobs:
     - powershell: Copy-Item azure-pipelines\build_env_tmpl.bat build_env.bat
       displayName: Layering Azure Pipeline's build_env.bat
     - script: |
-          call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\vsdevcmd" -arch=$(TARGET_ARCH) && clean_build.bat
+          call "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\vsdevcmd" -arch=$(TARGET_ARCH) && clean_build.bat
       displayName: Clean Build
     - task: ArchiveFiles@2
       displayName: Archive Completed Build Directory
